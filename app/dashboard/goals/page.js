@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-dynamic'
 import { useEffect, useState } from 'react'
 import { createClient, formatCurrency } from '@/lib/supabase'
 import { ToastContainer, useToast } from '@/components/Toast'
