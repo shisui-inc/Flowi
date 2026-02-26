@@ -260,7 +260,7 @@ export default function DashboardPage() {
           <div className="empty-state">
             <div className="empty-icon">💸</div>
             <div className="empty-title">Sin movimientos aún</div>
-            <p className="empty-sub">Toca "+ Nuevo" para registrar tu primer ingreso o gasto</p>
+            <p className="empty-sub">Toca &quot;+ Nuevo&quot; para registrar tu primer ingreso o gasto</p>
             <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)} style={{ marginTop: 8 }}>Agregar ahora</button>
           </div>
         ) : (
