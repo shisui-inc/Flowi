@@ -100,7 +100,7 @@ export default function DashboardPage() {
       <div style={{ display: 'grid', gap: 20 }}>
         <div className="skeleton" style={{ height: 120, borderRadius: 24 }} />
         <div className="grid-4" style={{ gap: 16 }}>
-          {[1,2,3,4].map(i => <div key={i} className="skeleton" style={{ height: 100, borderRadius: 20 }} />)}
+          {[1, 2, 3, 4].map(i => <div key={i} className="skeleton" style={{ height: 100, borderRadius: 20 }} />)}
         </div>
         <div className="skeleton" style={{ height: 240, borderRadius: 24 }} />
       </div>
@@ -158,7 +158,7 @@ export default function DashboardPage() {
       <div className="grid-4 animate-fadeUp delay-2">
         {[
           { label: 'Transacciones', value: monthTxs.length, icon: '⇄', color: 'var(--teal)' },
-          { label: 'Mayor gasto', value: formatCurrency(Math.max(...monthTxs.filter(t=>t.type==='expense').map(t=>Number(t.amount)), 0), profile?.currency), icon: '⬆', color: 'var(--red)' },
+          { label: 'Mayor gasto', value: formatCurrency(Math.max(...monthTxs.filter(t => t.type === 'expense').map(t => Number(t.amount)), 0), profile?.currency), icon: '⬆', color: 'var(--red)' },
           { label: 'Promedio diario', value: formatCurrency(expenses / Math.max(now.getDate(), 1), profile?.currency), icon: '◑', color: 'var(--yellow)' },
           { label: 'Tasa de ahorro', value: `${savingRate}%`, icon: '◎', color: 'var(--lime)', highlight: savingRate >= 20 },
         ].map((stat, i) => (
@@ -273,8 +273,8 @@ export default function DashboardPage() {
                   padding: '12px 14px', borderRadius: 14, transition: 'background 0.15s',
                   cursor: 'default',
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = 'var(--surface)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--surface)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                 >
                   <div style={{
                     width: 42, height: 42, borderRadius: 13,
@@ -308,8 +308,8 @@ export default function DashboardPage() {
               {savingRate >= 20
                 ? `¡Vas genial! Estás ahorrando el ${savingRate}% de tus ingresos. Considera invertir una parte en un fondo de bajo riesgo.`
                 : savingRate > 0
-                ? `Tu tasa de ahorro es ${savingRate}%. La meta recomendada es 20%. Revisa tus gastos en entretenimiento y compras.`
-                : 'Aún no registras ingresos este mes. Empieza añadiendo tu salario para ver tu salud financiera.'}
+                  ? `Tu tasa de ahorro es ${savingRate}%. La meta recomendada es 20%. Revisa tus gastos en entretenimiento y compras.`
+                  : 'Aún no registras ingresos este mes. Empieza añadiendo tu salario para ver tu salud financiera.'}
             </p>
           </div>
         </div>

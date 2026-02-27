@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "eslint": "^8",
-    "eslint-config-next": "14.2.5",
-    "jimp": "^1.6.0"
+    "eslint-config-next": "14.2.5"
   }
 }
