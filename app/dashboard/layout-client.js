@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import Sidebar from '@/components/Sidebar'
+import TopBar from '@/components/TopBar'
+import BottomNavBar from '@/components/BottomNavBar'
 import { useRouter } from 'next/navigation'
 
 export default function DashboardLayoutClient({ children }) {
@@ -18,7 +20,6 @@ export default function DashboardLayoutClient({ children }) {
       setUser(user)
       const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
       setProfile(data)
-      // Apply saved theme
       if (data?.theme) document.documentElement.setAttribute('data-theme', data.theme)
       setLoading(false)
     }
@@ -32,7 +33,7 @@ export default function DashboardLayoutClient({ children }) {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', background: '#080810', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
+      <div style={{ height: '100dvh', background: '#080810', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
         <div style={{ fontFamily: "'Syne',sans-serif", fontSize: 28, fontWeight: 800, color: '#fff' }}>
           flowi<span style={{ color: '#C8F44D' }}>.</span>
         </div>
@@ -42,11 +43,64 @@ export default function DashboardLayoutClient({ children }) {
   }
 
   return (
-    <div className="app-shell">
-      <Sidebar user={user} profile={profile} />
-      <main className="main-content">
-        {children}
-      </main>
-    </div>
+    <QuickAddWrapper router={router}>
+      {({ openQuickAdd }) => (
+        <div className="app-shell">
+          {/* Desktop sidebar */}
+          <div className="desktop-sidebar">
+            <Sidebar user={user} profile={profile} />
+          </div>
+
+          {/* Mobile top bar */}
+          <TopBar />
+
+          {/* Main scrollable content */}
+          <main className="main-content">
+            {children}
+          </main>
+
+          {/* FAB — mobile only */}
+          <button
+            className="fab"
+            aria-label="Agregar gasto rápido"
+            onClick={openQuickAdd}
+          >
+            <span className="fab__icon">+</span>
+          </button>
+
+          {/* Mobile bottom navigation */}
+          <BottomNavBar />
+        </div>
+      )}
+    </QuickAddWrapper>
+  )
+}
+
+// Wrapper that owns the modal state so it sits above the app-shell in the tree
+function QuickAddWrapper({ children, router }) {
+  const [showQuickAdd, setShowQuickAdd] = useState(false)
+  const [QuickAddModal, setQuickAddModal] = useState(null)
+
+  const openQuickAdd = async () => {
+    if (!QuickAddModal) {
+      const mod = await import('@/components/QuickAddModal')
+      setQuickAddModal(() => mod.default)
+    }
+    setShowQuickAdd(true)
+  }
+
+  return (
+    <>
+      {children({ openQuickAdd })}
+      {showQuickAdd && QuickAddModal && (
+        <QuickAddModal
+          onClose={() => setShowQuickAdd(false)}
+          onSaved={() => {
+            setShowQuickAdd(false)
+            router.refresh()
+          }}
+        />
+      )}
+    </>
   )
 }

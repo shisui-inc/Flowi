@@ -5,11 +5,11 @@ import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 
 const NAV = [
-  { href: '/dashboard',              icon: '⬡', label: 'Inicio' },
+  { href: '/dashboard', icon: '⬡', label: 'Inicio' },
   { href: '/dashboard/transactions', icon: '⇄', label: 'Movimientos' },
-  { href: '/dashboard/goals',        icon: '◎', label: 'Metas' },
-  { href: '/dashboard/budgets',      icon: '▦', label: 'Presupuestos' },
-  { href: '/dashboard/settings',     icon: '◈', label: 'Ajustes' },
+  { href: '/dashboard/goals', icon: '◎', label: 'Metas' },
+  { href: '/dashboard/budgets', icon: '▦', label: 'Presupuestos' },
+  { href: '/dashboard/settings', icon: '◈', label: 'Ajustes' },
 ]
 
 export default function Sidebar({ user, profile }) {
@@ -27,61 +27,43 @@ export default function Sidebar({ user, profile }) {
     .split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
 
   return (
-    <>
-      {/* Desktop sidebar */}
-      <aside style={s.aside}>
-        {/* Logo */}
-        <div style={s.logo}>
-          <span style={s.logoText}>flowi</span>
-          <span style={s.logoDot}>.</span>
-        </div>
+    <aside style={s.aside}>
+      {/* Logo */}
+      <div style={s.logo}>
+        <span style={s.logoText}>flowi</span>
+        <span style={s.logoDot}>.</span>
+      </div>
 
-        {/* Nav */}
-        <nav style={s.nav}>
-          {NAV.map(item => {
-            const active = item.href === '/dashboard'
-              ? pathname === '/dashboard'
-              : pathname.startsWith(item.href)
-            return (
-              <Link key={item.href} href={item.href} style={{ ...s.navItem, ...(active ? s.navActive : {}) }}>
-                <span style={{ ...s.navIcon, ...(active ? s.navIconActive : {}) }}>{item.icon}</span>
-                <span style={s.navLabel}>{item.label}</span>
-                {active && <div style={s.navDot} />}
-              </Link>
-            )
-          })}
-        </nav>
-
-        {/* Bottom section */}
-        <div style={s.bottom}>
-          <div style={s.userRow}>
-            <div style={s.avatar}>{initials}</div>
-            <div style={s.userInfo}>
-              <div style={s.userName}>{profile?.name || 'Usuario'}</div>
-              <div style={s.userEmail}>{user?.email}</div>
-            </div>
-          </div>
-          <button style={s.signOut} onClick={signOut} disabled={signingOut}>
-            {signingOut ? '...' : '↩ Salir'}
-          </button>
-        </div>
-      </aside>
-
-      {/* Mobile bottom nav */}
-      <div style={s.mobileNav}>
-        {NAV.slice(0, 4).map(item => {
+      {/* Nav */}
+      <nav style={s.nav}>
+        {NAV.map(item => {
           const active = item.href === '/dashboard'
             ? pathname === '/dashboard'
             : pathname.startsWith(item.href)
           return (
-            <Link key={item.href} href={item.href} style={{ ...s.mobileItem, ...(active ? s.mobileActive : {}) }}>
-              <span style={{ fontSize: 20 }}>{item.icon}</span>
-              <span style={{ fontSize: 10, fontWeight: 600 }}>{item.label}</span>
+            <Link key={item.href} href={item.href} style={{ ...s.navItem, ...(active ? s.navActive : {}) }}>
+              <span style={{ ...s.navIcon, ...(active ? s.navIconActive : {}) }}>{item.icon}</span>
+              <span style={s.navLabel}>{item.label}</span>
+              {active && <div style={s.navDot} />}
             </Link>
           )
         })}
+      </nav>
+
+      {/* Bottom section */}
+      <div style={s.bottom}>
+        <div style={s.userRow}>
+          <div style={s.avatar}>{initials}</div>
+          <div style={s.userInfo}>
+            <div style={s.userName}>{profile?.name || 'Usuario'}</div>
+            <div style={s.userEmail}>{user?.email}</div>
+          </div>
+        </div>
+        <button style={s.signOut} onClick={signOut} disabled={signingOut}>
+          {signingOut ? '...' : '↩ Salir'}
+        </button>
       </div>
-    </>
+    </aside>
   )
 }
 
@@ -140,20 +122,4 @@ const s = {
     borderRadius: 8, textAlign: 'left', transition: 'color 0.15s',
     fontFamily: 'var(--font-body)', fontWeight: 400,
   },
-  mobileNav: {
-    display: 'none',
-    position: 'fixed', bottom: 0, left: 0, right: 0,
-    background: 'var(--bg2)',
-    borderTop: '1px solid var(--border)',
-    padding: '10px 0 24px',
-    zIndex: 200,
-    justifyContent: 'space-around',
-    '@media (max-width: 768px)': { display: 'flex' },
-  },
-  mobileItem: {
-    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
-    color: 'var(--text-3)', textDecoration: 'none', padding: '6px 16px',
-    borderRadius: 12, transition: 'color 0.15s',
-  },
-  mobileActive: { color: 'var(--lime)' },
 }
