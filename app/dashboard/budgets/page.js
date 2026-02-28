@@ -5,7 +5,7 @@ import { ToastContainer, useToast } from '@/components/Toast'
 import { startOfMonth, endOfMonth, format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
-const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
 function BudgetModal({ budget, categories, month, year, onClose, onSaved }) {
   const supabase = createClient()
@@ -22,8 +22,8 @@ function BudgetModal({ budget, categories, month, year, onClose, onSaved }) {
     const { data: { user } } = await supabase.auth.getUser()
     const payload = { user_id: user.id, category_id: form.category_id, limit_amount: parseFloat(form.limit_amount), month, year }
     let error
-    if (budget) { ;({ error } = await supabase.from('budgets').update({ limit_amount: payload.limit_amount }).eq('id', budget.id)) }
-    else { ;({ error } = await supabase.from('budgets').upsert(payload, { onConflict: 'user_id,category_id,month,year' })) }
+    if (budget) { ; ({ error } = await supabase.from('budgets').update({ limit_amount: payload.limit_amount }).eq('id', budget.id)) }
+    else { ; ({ error } = await supabase.from('budgets').upsert(payload, { onConflict: 'user_id,category_id,month,year' })) }
     setLoading(false)
     if (!error) onSaved()
     else alert(error.message)
@@ -87,7 +87,7 @@ export default function BudgetsPage() {
       supabase.from('profiles').select('*').eq('id', user.id).single(),
       supabase.from('budgets').select('*, categories(name,icon,color)').eq('user_id', user.id).eq('month', selMonth).eq('year', selYear),
       supabase.from('categories').select('*').eq('user_id', user.id),
-      supabase.from('transactions').select('*').eq('user_id', user.id).eq('type', 'expense').gte('date', ms.toISOString().slice(0,10)).lte('date', me.toISOString().slice(0,10)),
+      supabase.from('transactions').select('*').eq('user_id', user.id).eq('type', 'expense').gte('date', ms.toISOString().slice(0, 10)).lte('date', me.toISOString().slice(0, 10)),
     ])
     setProfile(prof); setBudgets(bs || []); setCategories(cats || []); setTransactions(txs || [])
     setLoading(false)
@@ -135,7 +135,7 @@ export default function BudgetsPage() {
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           {/* Month/Year selector */}
           <select className="input" value={selMonth} onChange={e => setSelMonth(Number(e.target.value))} style={{ width: 140 }}>
-            {MONTHS.map((m, i) => <option key={i} value={i+1}>{m}</option>)}
+            {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
           </select>
           <select className="input" value={selYear} onChange={e => setSelYear(Number(e.target.value))} style={{ width: 90 }}>
             {years.map(y => <option key={y} value={y}>{y}</option>)}
@@ -146,7 +146,7 @@ export default function BudgetsPage() {
 
       {/* Month summary */}
       {budgets.length > 0 && (
-        <div className="card card-pad">
+        <div className="glass-card card-pad">
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>
             <div>
               <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800 }}>
@@ -167,7 +167,7 @@ export default function BudgetsPage() {
           </div>
           <div className="progress-track" style={{ height: 12 }}>
             <div className="progress-fill" style={{
-              width: `${totalLimit > 0 ? Math.min((totalSpent/totalLimit)*100, 100) : 0}%`,
+              width: `${totalLimit > 0 ? Math.min((totalSpent / totalLimit) * 100, 100) : 0}%`,
               background: totalSpent <= totalLimit * 0.8 ? 'var(--lime)' : totalSpent <= totalLimit ? 'var(--yellow)' : 'var(--red)',
             }} />
           </div>
@@ -181,7 +181,7 @@ export default function BudgetsPage() {
 
       {/* Budget cards */}
       {budgets.length === 0 ? (
-        <div className="card">
+        <div className="glass-card">
           <div className="empty-state">
             <div className="empty-icon">▦</div>
             <div className="empty-title">Sin presupuestos</div>
@@ -195,7 +195,7 @@ export default function BudgetsPage() {
             const cat = budget.categories
             const barColor = budget.pct >= 100 ? 'var(--red)' : budget.pct >= 80 ? 'var(--yellow)' : 'var(--lime)'
             return (
-              <div key={budget.id} className="card card-pad" style={{ transition: 'border 0.2s', borderColor: budget.over ? 'rgba(255,107,107,0.3)' : 'var(--border)' }}>
+              <div key={budget.id} className="glass-card card-pad" style={{ transition: 'border 0.2s', borderColor: budget.over ? 'rgba(255,107,107,0.3)' : 'var(--border)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 14, background: `${cat?.color || '#888'}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
                     {cat?.icon || '📦'}

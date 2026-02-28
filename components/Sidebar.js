@@ -3,13 +3,14 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
+import { LayoutDashboard, ArrowLeftRight, Target, Wallet, Settings, LogOut } from 'lucide-react'
 
 const NAV = [
-  { href: '/dashboard', icon: '⬡', label: 'Inicio' },
-  { href: '/dashboard/transactions', icon: '⇄', label: 'Movimientos' },
-  { href: '/dashboard/goals', icon: '◎', label: 'Metas' },
-  { href: '/dashboard/budgets', icon: '▦', label: 'Presupuestos' },
-  { href: '/dashboard/settings', icon: '◈', label: 'Ajustes' },
+  { href: '/dashboard', Icon: LayoutDashboard, label: 'Inicio' },
+  { href: '/dashboard/transactions', Icon: ArrowLeftRight, label: 'Movimientos' },
+  { href: '/dashboard/goals', Icon: Target, label: 'Metas' },
+  { href: '/dashboard/budgets', Icon: Wallet, label: 'Presupuestos' },
+  { href: '/dashboard/settings', Icon: Settings, label: 'Ajustes' },
 ]
 
 export default function Sidebar({ user, profile }) {
@@ -27,7 +28,7 @@ export default function Sidebar({ user, profile }) {
     .split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
 
   return (
-    <aside style={s.aside}>
+    <aside className="glass-strong" style={s.aside}>
       {/* Logo */}
       <div style={s.logo}>
         <span style={s.logoText}>flowi</span>
@@ -36,21 +37,23 @@ export default function Sidebar({ user, profile }) {
 
       {/* Nav */}
       <nav style={s.nav}>
-        {NAV.map(item => {
-          const active = item.href === '/dashboard'
+        {NAV.map(({ href, Icon, label }) => {
+          const active = href === '/dashboard'
             ? pathname === '/dashboard'
-            : pathname.startsWith(item.href)
+            : pathname.startsWith(href)
           return (
-            <Link key={item.href} href={item.href} style={{ ...s.navItem, ...(active ? s.navActive : {}) }}>
-              <span style={{ ...s.navIcon, ...(active ? s.navIconActive : {}) }}>{item.icon}</span>
-              <span style={s.navLabel}>{item.label}</span>
+            <Link key={href} href={href} className={`sidebar-item ${active ? 'active' : ''}`}>
+              <span style={s.navIconWrap}>
+                <Icon size={17} strokeWidth={active ? 2.2 : 1.7} color={active ? 'var(--accent-lime)' : 'var(--text-secondary)'} />
+              </span>
+              <span style={{ flex: 1 }}>{label}</span>
               {active && <div style={s.navDot} />}
             </Link>
           )
         })}
       </nav>
 
-      {/* Bottom section */}
+      {/* Bottom */}
       <div style={s.bottom}>
         <div style={s.userRow}>
           <div style={s.avatar}>{initials}</div>
@@ -60,7 +63,8 @@ export default function Sidebar({ user, profile }) {
           </div>
         </div>
         <button style={s.signOut} onClick={signOut} disabled={signingOut}>
-          {signingOut ? '...' : '↩ Salir'}
+          <LogOut size={13} strokeWidth={1.8} />
+          {signingOut ? 'Saliendo...' : 'Cerrar sesión'}
         </button>
       </div>
     </aside>
@@ -69,43 +73,37 @@ export default function Sidebar({ user, profile }) {
 
 const s = {
   aside: {
-    background: 'var(--bg2)',
-    borderRight: '1px solid var(--border)',
     height: '100vh',
     position: 'sticky',
     top: 0,
     display: 'flex',
     flexDirection: 'column',
     padding: '28px 16px',
-    '@media (max-width: 768px)': { display: 'none' },
+    /* glass-strong handles background/border/blur */
+    borderRight: '1px solid var(--glass-border)',
+    borderRadius: 0,  /* override glass-strong radius for sidebar */
   },
   logo: { display: 'flex', alignItems: 'baseline', gap: 1, padding: '0 8px', marginBottom: 36 },
   logoText: { fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.5px' },
   logoDot: { fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--lime)' },
   nav: { display: 'flex', flexDirection: 'column', gap: 2, flex: 1 },
   navItem: {
-    display: 'flex', alignItems: 'center', gap: 12,
-    padding: '11px 12px', borderRadius: 'var(--r-md)',
+    display: 'flex', alignItems: 'center', gap: 11,
+    padding: '10px 12px', borderRadius: 'var(--r-md)',
     textDecoration: 'none', color: 'var(--text-3)',
     fontSize: 14, fontWeight: 500,
     transition: 'all 0.18s ease',
-    position: 'relative',
-    cursor: 'pointer',
+    position: 'relative', cursor: 'pointer',
   },
   navActive: {
-    background: 'var(--lime-dim)',
-    color: 'var(--lime)',
-    fontWeight: 700,
+    background: 'rgba(200,244,77,0.08)',
+    boxShadow: '0 0 0 1px rgba(200,244,77,0.15) inset',
+    color: 'var(--lime)', fontWeight: 700,
   },
-  navIcon: { fontSize: 16, width: 20, textAlign: 'center', flexShrink: 0 },
-  navIconActive: { filter: 'none' },
+  navIconWrap: { display: 'flex', alignItems: 'center', justifyContent: 'center', width: 20, flexShrink: 0 },
   navLabel: { flex: 1 },
-  navDot: {
-    width: 6, height: 6, borderRadius: '50%',
-    background: 'var(--lime)',
-    flexShrink: 0,
-  },
-  bottom: { display: 'flex', flexDirection: 'column', gap: 12, paddingTop: 16, borderTop: '1px solid var(--border)' },
+  navDot: { width: 5, height: 5, borderRadius: '50%', background: 'var(--lime)', flexShrink: 0, boxShadow: '0 0 6px var(--lime)' },
+  bottom: { display: 'flex', flexDirection: 'column', gap: 12, paddingTop: 16, borderTop: '1px solid var(--glass-border)' },
   userRow: { display: 'flex', alignItems: 'center', gap: 10, padding: '8px', borderRadius: 'var(--r-md)' },
   avatar: {
     width: 36, height: 36, borderRadius: '50%',
@@ -119,7 +117,8 @@ const s = {
   signOut: {
     background: 'transparent', border: 'none', cursor: 'pointer',
     color: 'var(--text-3)', fontSize: 12, padding: '8px 12px',
-    borderRadius: 8, textAlign: 'left', transition: 'color 0.15s',
+    borderRadius: 8, transition: 'color 0.15s',
     fontFamily: 'var(--font-body)', fontWeight: 400,
+    display: 'flex', alignItems: 'center', gap: 7,
   },
 }

@@ -1,6 +1,10 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import {
+  User2, Palette, KeyRound, TriangleAlert, LogOut,
+  Moon, Sun, Mail, ShieldCheck,
+} from 'lucide-react'
 import { ToastContainer, useToast } from '@/components/Toast'
 
 const CURRENCIES = [
@@ -22,7 +26,14 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [signingOut, setSigningOut] = useState(false)
   const [form, setForm] = useState({ name: '', currency: 'USD', monthly_income: '' })
+
+  const signOut = async () => {
+    setSigningOut(true)
+    await supabase.auth.signOut()
+    window.location.href = '/auth/login'
+  }
 
   useEffect(() => {
     async function load() {
@@ -77,11 +88,11 @@ export default function SettingsPage() {
 
       {/* Profile */}
       <div className="card card-pad">
-        <h2 className="h2" style={{ marginBottom: 20 }}>👤 Perfil</h2>
+        <h2 className="h2" style={{ marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}><User2 size={20} strokeWidth={1.8} color="var(--text-2)" /> Perfil</h2>
         <form onSubmit={saveProfile} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 8 }}>
             <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'linear-gradient(135deg, var(--lime), #9fe030)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 22, color: '#000', flexShrink: 0 }}>
-              {(form.name || user?.email || 'U').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()}
+              {(form.name || user?.email || 'U').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
             </div>
             <div>
               <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16 }}>{form.name || 'Sin nombre'}</div>
@@ -115,10 +126,14 @@ export default function SettingsPage() {
 
       {/* Appearance */}
       <div className="card card-pad">
-        <h2 className="h2" style={{ marginBottom: 20 }}>🎨 Apariencia</h2>
+        <h2 className="h2" style={{ marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}><Palette size={20} strokeWidth={1.8} color="var(--text-2)" /> Apariencia</h2>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: 'var(--surface)', borderRadius: 14, border: '1px solid var(--border)' }}>
           <div>
-            <div style={{ fontWeight: 600, fontSize: 14 }}>{profile?.theme === 'dark' ? '🌙 Modo oscuro' : '☀️ Modo claro'}</div>
+            <div style={{ fontWeight: 600, fontSize: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
+              {profile?.theme === 'dark'
+                ? <><Moon size={15} strokeWidth={1.8} /> Modo oscuro</>
+                : <><Sun size={15} strokeWidth={1.8} /> Modo claro</>}
+            </div>
             <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 2 }}>Cambia entre tema oscuro y claro</div>
           </div>
           <label className="toggle">
@@ -131,7 +146,7 @@ export default function SettingsPage() {
 
       {/* Account info */}
       <div className="card card-pad">
-        <h2 className="h2" style={{ marginBottom: 20 }}>🔑 Cuenta</h2>
+        <h2 className="h2" style={{ marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}><KeyRound size={20} strokeWidth={1.8} color="var(--text-2)" /> Cuenta</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', background: 'var(--surface)', borderRadius: 12 }}>
             <div>
@@ -144,7 +159,11 @@ export default function SettingsPage() {
             <div>
               <div style={{ fontSize: 13, fontWeight: 600 }}>Proveedor de autenticación</div>
               <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 2 }}>
-                {user?.app_metadata?.provider === 'google' ? '🔵 Google' : '📧 Email / Contraseña'}
+                <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  {user?.app_metadata?.provider === 'google'
+                    ? <><ShieldCheck size={13} strokeWidth={1.8} color="var(--teal)" /> Google</>
+                    : <><Mail size={13} strokeWidth={1.8} color="var(--text-3)" /> Email / Contraseña</>}
+                </span>
               </div>
             </div>
           </div>
@@ -156,12 +175,27 @@ export default function SettingsPage() {
               </div>
             </div>
           </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', background: 'var(--surface)', borderRadius: 12 }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600 }}>Sesión activa</div>
+              <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 2 }}>Cerrar sesión en este dispositivo</div>
+            </div>
+            <button
+              className="btn btn-danger btn-sm"
+              onClick={signOut}
+              disabled={signingOut}
+            >
+              {signingOut
+                ? <span className="spinner" style={{ width: 14, height: 14 }} />
+                : <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><LogOut size={13} strokeWidth={1.8} /> Cerrar sesión</span>}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Danger zone */}
       <div className="card card-pad" style={{ borderColor: 'rgba(255,107,107,0.2)' }}>
-        <h2 className="h2" style={{ color: 'var(--red)', marginBottom: 8 }}>⚠️ Zona de peligro</h2>
+        <h2 className="h2" style={{ color: 'var(--red)', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}><TriangleAlert size={20} strokeWidth={1.8} color="var(--red)" /> Zona de peligro</h2>
         <p style={{ fontSize: 13, color: 'var(--text-3)', marginBottom: 20, lineHeight: 1.6 }}>Estas acciones son irreversibles. Procede con cuidado.</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: 'rgba(255,107,107,0.05)', borderRadius: 12, border: '1px solid rgba(255,107,107,0.12)' }}>

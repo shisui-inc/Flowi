@@ -86,21 +86,21 @@ export default function TransactionsPage() {
 
       {/* Summary pills */}
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-        <div className="card card-pad-sm" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div className="glass-card card-pad-sm" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <span style={{ fontSize: 16 }}>💵</span>
           <div>
             <div style={{ fontSize: 11, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>Ingresos filtrados</div>
             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--lime)', fontSize: 18 }}>+{formatCurrency(totalIncome, profile?.currency)}</div>
           </div>
         </div>
-        <div className="card card-pad-sm" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div className="glass-card card-pad-sm" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <span style={{ fontSize: 16 }}>💸</span>
           <div>
             <div style={{ fontSize: 11, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>Gastos filtrados</div>
             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--red)', fontSize: 18 }}>-{formatCurrency(totalExpense, profile?.currency)}</div>
           </div>
         </div>
-        <div className="card card-pad-sm" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div className="glass-card card-pad-sm" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <span style={{ fontSize: 16 }}>⚖</span>
           <div>
             <div style={{ fontSize: 11, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>Neto</div>
@@ -112,13 +112,13 @@ export default function TransactionsPage() {
       </div>
 
       {/* Filters */}
-      <div className="card card-pad-sm" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+      <div className="glass-card card-pad-sm" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
         {/* Search */}
         <input className="input" placeholder="🔍 Buscar..." value={search} onChange={e => setSearch(e.target.value)} style={{ flex: 1, minWidth: 180 }} />
 
         {/* Type filter */}
         <div style={{ display: 'flex', gap: 6 }}>
-          {[['all','Todos'],['income','Ingresos'],['expense','Gastos']].map(([val, label]) => (
+          {[['all', 'Todos'], ['income', 'Ingresos'], ['expense', 'Gastos']].map(([val, label]) => (
             <button key={val} className={`btn btn-sm ${filter === val ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setFilter(val)}>{label}</button>
           ))}
         </div>
@@ -138,7 +138,7 @@ export default function TransactionsPage() {
 
       {/* Transaction list */}
       {grouped.length === 0 ? (
-        <div className="card">
+        <div className="glass-card">
           <div className="empty-state">
             <div className="empty-icon">💸</div>
             <div className="empty-title">Sin movimientos</div>
@@ -157,10 +157,10 @@ export default function TransactionsPage() {
               </span>
               <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
               <span style={{ fontSize: 12, color: 'var(--text-3)' }}>
-                {formatCurrency(txs.filter(t=>t.type==='income').reduce((a,t)=>a+Number(t.amount),0) - txs.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount),0), profile?.currency)}
+                {formatCurrency(txs.filter(t => t.type === 'income').reduce((a, t) => a + Number(t.amount), 0) - txs.filter(t => t.type === 'expense').reduce((a, t) => a + Number(t.amount), 0), profile?.currency)}
               </span>
             </div>
-            <div className="card" style={{ overflow: 'hidden' }}>
+            <div className="glass-card" style={{ overflow: 'hidden' }}>
               {txs.map((tx, i) => {
                 const cat = tx.categories
                 return (
@@ -169,8 +169,8 @@ export default function TransactionsPage() {
                     borderBottom: i < txs.length - 1 ? '1px solid var(--border)' : 'none',
                     transition: 'background 0.15s',
                   }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'var(--surface)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--surface)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
                     <div style={{ width: 44, height: 44, borderRadius: 14, background: `${cat?.color || '#888'}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
                       {cat?.icon || '📦'}

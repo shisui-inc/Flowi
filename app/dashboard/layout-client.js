@@ -5,6 +5,7 @@ import Sidebar from '@/components/Sidebar'
 import TopBar from '@/components/TopBar'
 import BottomNavBar from '@/components/BottomNavBar'
 import { useRouter } from 'next/navigation'
+import { Plus } from 'lucide-react'
 
 export default function DashboardLayoutClient({ children }) {
   const [user, setUser] = useState(null)
@@ -61,11 +62,12 @@ export default function DashboardLayoutClient({ children }) {
 
           {/* FAB — mobile only */}
           <button
-            className="fab"
+            className="fab btn-glass-lime"
             aria-label="Agregar gasto rápido"
             onClick={openQuickAdd}
+            style={{ width: 56, height: 56, padding: 0, borderRadius: '50%' }}
           >
-            <span className="fab__icon">+</span>
+            <Plus size={24} strokeWidth={2.5} />
           </button>
 
           {/* Mobile bottom navigation */}

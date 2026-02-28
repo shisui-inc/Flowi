@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 import { createClient, formatCurrency } from '@/lib/supabase'
 import { ToastContainer, useToast } from '@/components/Toast'
 
-const COLORS = ['#C8F44D','#7BE8D5','#FFE66D','#FF6B6B','#B8B8FF','#FFA07A','#98D8C8','#FF8B94']
-const ICONS = ['🎯','🏖','🚗','💻','🏠','✈️','💍','📚','🎮','👶','🐕','💪']
+const COLORS = ['#C8F44D', '#7BE8D5', '#FFE66D', '#FF6B6B', '#B8B8FF', '#FFA07A', '#98D8C8', '#FF8B94']
+const ICONS = ['🎯', '🏖', '🚗', '💻', '🏠', '✈️', '💍', '📚', '🎮', '👶', '🐕', '💪']
 
 function GoalModal({ goal, onClose, onSaved }) {
   const supabase = createClient()
@@ -25,8 +25,8 @@ function GoalModal({ goal, onClose, onSaved }) {
     const { data: { user } } = await supabase.auth.getUser()
     const payload = { ...form, target_amount: parseFloat(form.target_amount), current_amount: parseFloat(form.current_amount) || 0, user_id: user.id }
     let error
-    if (goal) { ;({ error } = await supabase.from('savings_goals').update(payload).eq('id', goal.id)) }
-    else { ;({ error } = await supabase.from('savings_goals').insert(payload)) }
+    if (goal) { ; ({ error } = await supabase.from('savings_goals').update(payload).eq('id', goal.id)) }
+    else { ; ({ error } = await supabase.from('savings_goals').insert(payload)) }
     setLoading(false)
     if (!error) onSaved()
   }
@@ -129,7 +129,7 @@ function AddFundsModal({ goal, onClose, onSaved, currency }) {
             <input className="input" type="number" min="0.01" max={remaining} step="0.01" placeholder="Monto a agregar" required value={amount} onChange={e => setAmount(e.target.value)} autoFocus />
           </div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {[50,100,200,500].filter(n => n <= remaining).map(n => (
+            {[50, 100, 200, 500].filter(n => n <= remaining).map(n => (
               <button key={n} type="button" className="btn btn-secondary btn-sm" onClick={() => setAmount(n)}>{formatCurrency(n, currency)}</button>
             ))}
             <button type="button" className="btn btn-secondary btn-sm" onClick={() => setAmount(remaining)}>Todo ({formatCurrency(remaining, currency)})</button>
@@ -198,9 +198,9 @@ export default function GoalsPage() {
           {[
             { label: 'Total ahorrado', value: formatCurrency(totalSaved, profile?.currency), color: 'var(--lime)', icon: '💰' },
             { label: 'Meta total', value: formatCurrency(totalTarget, profile?.currency), color: 'var(--text)', icon: '🎯' },
-            { label: 'Progreso global', value: `${totalTarget > 0 ? Math.round((totalSaved/totalTarget)*100) : 0}%`, color: 'var(--teal)', icon: '📊' },
+            { label: 'Progreso global', value: `${totalTarget > 0 ? Math.round((totalSaved / totalTarget) * 100) : 0}%`, color: 'var(--teal)', icon: '📊' },
           ].map((s, i) => (
-            <div key={i} className="card card-pad">
+            <div key={i} className="glass-card card-pad">
               <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8 }}>
                 <span style={{ fontSize: 20 }}>{s.icon}</span>
                 <span style={{ fontSize: 12, color: 'var(--text-3)' }}>{s.label}</span>
@@ -213,20 +213,20 @@ export default function GoalsPage() {
 
       {/* Global progress bar */}
       {goals.length > 0 && totalTarget > 0 && (
-        <div className="card card-pad">
+        <div className="glass-card card-pad">
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
             <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700 }}>Progreso total</span>
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--lime)' }}>{Math.round((totalSaved/totalTarget)*100)}%</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--lime)' }}>{Math.round((totalSaved / totalTarget) * 100)}%</span>
           </div>
           <div className="progress-track">
-            <div className="progress-fill" style={{ width: `${Math.min((totalSaved/totalTarget)*100, 100)}%`, background: 'linear-gradient(90deg, var(--lime), var(--teal))' }} />
+            <div className="progress-fill" style={{ width: `${Math.min((totalSaved / totalTarget) * 100, 100)}%`, background: 'linear-gradient(90deg, var(--lime), var(--teal))' }} />
           </div>
         </div>
       )}
 
       {/* Goals grid */}
       {goals.length === 0 ? (
-        <div className="card">
+        <div className="glass-card">
           <div className="empty-state">
             <div className="empty-icon">🎯</div>
             <div className="empty-title">Sin metas aún</div>
@@ -240,7 +240,7 @@ export default function GoalsPage() {
             const pct = Math.min((Number(goal.current_amount) / Number(goal.target_amount)) * 100, 100)
             const remaining = Number(goal.target_amount) - Number(goal.current_amount)
             return (
-              <div key={goal.id} className="card card-pad card--glow hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
+              <div key={goal.id} className="glass-card card-pad card--glow hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
                 {/* Accent top */}
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: goal.color, borderRadius: '24px 24px 0 0' }} />
                 {goal.completed && (

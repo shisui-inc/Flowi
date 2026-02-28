@@ -2,7 +2,7 @@
 
 export default function TopBar() {
     return (
-        <header className="top-bar">
+        <header className="top-bar glass-nav" style={{ borderBottom: '1px solid var(--glass-border)', background: 'var(--glass-bg-strong)' }}>
             {/* Logo */}
             <div className="top-bar__logo">
                 <span className="top-bar__logo-text">flowi</span>
