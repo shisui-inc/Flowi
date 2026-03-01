@@ -29,7 +29,7 @@ export default function CeroDeudas() {
                 {/* Intro */}
                 <div className="intro-card">
                     <p>Si sientes un nudo en el estómago cada vez que revisas tu cuenta bancaria o llega el estado de cuenta de tu tarjeta de crédito, <strong>respira. No estás solo y no eres un fracaso financiero.</strong></p>
-                    <p>El sistema tradicional está diseñado exactamente para esto: ofrecerte crédito fácil, empujarte a pagar solo el "pago mínimo" y mantenerte atrapado pagando intereses durante años.</p>
+                    <p>El sistema tradicional está diseñado exactamente para esto: ofrecerte crédito fácil, empujarte a pagar solo el &quot;pago mínimo&quot; y mantenerte atrapado pagando intereses durante años.</p>
                     <p>Lo que importa hoy es la <strong>responsabilidad de salir de ahí</strong>. Aprende el método exacto para detener la hemorragia de dinero, organizar tus ingresos y destruir tus deudas.</p>
                 </div>
 
@@ -43,13 +43,13 @@ export default function CeroDeudas() {
                         </div>
                     </div>
 
-                    <p>El gran mito de las finanzas personales es: <strong>"El problema es que gano poco"</strong>. La cruda realidad es que el problema es no tener idea de a dónde va el dinero.</p>
+                    <p>El gran mito de las finanzas personales es: <strong>&quot;El problema es que gano poco&quot;</strong>. La cruda realidad es que el problema es no tener idea de a dónde va el dinero.</p>
                     <p>Antes de pagar deudas, necesitamos liberar capital de tu salario actual. Para esto, vamos a cazar los <strong>Gastos Vampiro</strong> — pequeños montos que te chupan la sangre financiera día a día sin que lo notes.</p>
 
                     <ul className="vampire-list">
                         <li>Suscripciones que no usas (apps, plataformas de streaming extra)</li>
                         <li>Comisiones bancarias por manejo de cuenta que podrías evitar</li>
-                        <li>Comidas fuera de casa por "no tener tiempo" de planificar</li>
+                        <li>Comidas fuera de casa por &quot;no tener tiempo&quot; de planificar</li>
                     </ul>
 
                     <div className="highlight">
@@ -123,9 +123,9 @@ export default function CeroDeudas() {
                     <div className="script-box">
                         <div className="script-box-label">Hack Experto — El Guion de Negociación</div>
                         <div className="script-quote">
-                            "Hola. Tengo una tarjeta/crédito con ustedes y he sido un buen cliente, pero actualmente la tasa de interés me está asfixiando. Otros bancos me están ofreciendo comprar mi cartera a una tasa mucho menor. Antes de irme con ellos, quiero saber si ustedes pueden reestructurar mi deuda o bajar mi tasa para poder quedarme."
+                            &quot;Hola. Tengo una tarjeta/crédito con ustedes y he sido un buen cliente, pero actualmente la tasa de interés me está asfixiando. Otros bancos me están ofreciendo comprar mi cartera a una tasa mucho menor. Antes de irme con ellos, quiero saber si ustedes pueden reestructurar mi deuda o bajar mi tasa para poder quedarme.&quot;
                         </div>
-                        <p className="script-note">Llama a tu banco hoy mismo. El "no" ya lo tienes. Si te dicen que sí, acabas de ahorrarte meses de pagos.</p>
+                        <p className="script-note">Llama a tu banco hoy mismo. El &quot;no&quot; ya lo tienes. Si te dicen que sí, acabas de ahorrarte meses de pagos.</p>
                     </div>
                 </div>
 
